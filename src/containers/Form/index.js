@@ -12,42 +12,46 @@ const Form = ({ onSuccess, onError }) => {
   const sendContact = useCallback(
     async (evt) => {
       evt.preventDefault();
-      setSending(true);
       // We try to call mockContactApi
-      const form = evt.target; 
-      // checking required parts but it fails ???
-      if (!form.checkValidity()) {
-        form.reportValidity(); 
-        setSending(false); 
-        return; 
+    const form = evt.target;
+    const lastName = form.lastName?.value;
+    const firstName = form.firstName?.value;
+    const company = form.company?.value;
+    const email = form.email?.value;
+    const textArea = form.textArea?.value;
+      if ( lastName && firstName && company && email && textArea ) {
+      setSending(true);
+        try {
+          await mockContactApi();
+          setSending(false);
+          onSuccess();  // Modal fix
+        } catch (err) {
+          setSending(false);
+          onError(err);
+        }
       }
-      try {
-        await mockContactApi();
-        setSending(false);
-        onSuccess();  // Modal fix
-      } catch (err) {
-        setSending(false);
-        onError(err);
+      else {
+        onError();
       }
     },
     [onSuccess, onError]
   );
   
   return (
-    <form onSubmit={sendContact}>
+    <form onSubmit={sendContact} autoComplete="off" >
   <div className="row">
     <div className="col">
-      <Field placeholder="" label="Nom" required />
-      <Field placeholder="" label="Prénom" required />
+      <Field placeholder="" label="Nom" name='lastName' />
+      <Field placeholder="" label="Prénom" name='firstName' />
       <Select
         selection={["Personel", "Entreprise"]}
         onChange={() => null}
         label="Personel / Entreprise"
         type="large"
         titleEmpty
-        required
+        name='company'
       />
-      <Field placeholder="" label="Email" required />
+      <Field placeholder="" label="Email" name='email' />
       <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
         {sending ? "En cours" : "Envoyer"}
       </Button>
@@ -57,7 +61,7 @@ const Form = ({ onSuccess, onError }) => {
         placeholder="message"
         label="Message"
         type={FIELD_TYPES.TEXTAREA}
-        required
+        name='textArea'
       />
     </div>
   </div>

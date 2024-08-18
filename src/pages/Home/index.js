@@ -107,7 +107,7 @@ const Page = () => {
           {({ setIsOpened }) => (
             <Form
               onSuccess={() => setIsOpened(true)}
-              onError={() => null}
+              onError={() => alert('Merci de remplir les champs du formulaire.')}
             />
           )}
         </Modal>

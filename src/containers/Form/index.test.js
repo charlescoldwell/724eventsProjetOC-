@@ -22,6 +22,7 @@ describe("When Events is created", () => {
         })
       );
       await screen.findByText("En cours");
+      screen.debug()
       await screen.findByText("Envoyer");
       expect(onSuccess).toHaveBeenCalled();
     });
