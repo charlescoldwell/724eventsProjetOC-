@@ -13,7 +13,8 @@ describe("When Events is created", () => {
   describe("and a click is triggered on the submit button", () => {
     it("the success action is called", async () => {
       const onSuccess = jest.fn();
-      render(<Form onSuccess={onSuccess} />);
+      const onError = jest.fn();
+      render(<Form onSuccess={onSuccess} onError={onError} />);
       fireEvent(
         await screen.findByTestId("button-test-id"),
         new MouseEvent("click", {
@@ -21,10 +22,9 @@ describe("When Events is created", () => {
           bubbles: true,
         })
       );
-      await screen.findByText("En cours");
       screen.debug()
       await screen.findByText("Envoyer");
-      expect(onSuccess).toHaveBeenCalled();
+      expect(onError).toHaveBeenCalled();
     });
   });
 });

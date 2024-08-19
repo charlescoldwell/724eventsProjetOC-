@@ -7,7 +7,7 @@ export const FIELD_TYPES = {
   TEXTAREA: 2,
 };
 
-const Field = ({ type = FIELD_TYPES.INPUT_TEXT, label, name, placeholder }) => {
+const Field = ({ type = FIELD_TYPES.INPUT_TEXT, label, name, placeholder, autoComplete }) => {
   let component;
   switch (type) {
     case FIELD_TYPES.INPUT_TEXT:
@@ -17,7 +17,7 @@ const Field = ({ type = FIELD_TYPES.INPUT_TEXT, label, name, placeholder }) => {
           name={name}
           placeholder={placeholder}
           data-testid="field-testid"
-          autoComplete="off"
+          autoComplete={autoComplete}
         />
       );
       break;
@@ -31,7 +31,7 @@ const Field = ({ type = FIELD_TYPES.INPUT_TEXT, label, name, placeholder }) => {
           name={name}
           placeholder={placeholder}
           data-testid="field-testid"
-          autoComplete="off"
+          autoComplete={autoComplete}
         />
       );
   }
@@ -48,10 +48,12 @@ Field.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  autoComplete: PropTypes.string,
 };
  Field.defaultProps = {
    label: "",
    placeholder: "",
+   autoComplete: "",
    type: FIELD_TYPES.INPUT_TEXT,
    name: "field-name",
  }

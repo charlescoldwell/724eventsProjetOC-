@@ -51,7 +51,7 @@ const Form = ({ onSuccess, onError }) => {
         titleEmpty
         name='company'
       />
-      <Field placeholder="" label="Email" name='email' />
+      <Field placeholder="" label="Email" name='email' autoComplete="off" />
       <Button type={BUTTON_TYPES.SUBMIT} disabled={sending}>
         {sending ? "En cours" : "Envoyer"}
       </Button>
