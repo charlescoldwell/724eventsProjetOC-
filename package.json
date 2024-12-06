@@ -2,10 +2,12 @@
   "name": "724-events",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://charlescoldwell.github.io/724eventsProjetOpenClassRooms",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
+    "gh-pages": "^6.2.0",
     "md5": "^2.3.0",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
@@ -19,7 +21,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "lint": "eslint .eslintrc.js ./src",
-    "format": "prettier ./src --write"
+    "format": "prettier ./src --write",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
