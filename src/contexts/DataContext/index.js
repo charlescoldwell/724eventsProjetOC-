@@ -3,12 +3,30 @@ import { createContext, useCallback, useContext, useEffect, useState, useMemo } 
 
 const DataContext = createContext({});
 
-export const api = {
+const api = {
   loadData: async () => {
-    const json = await fetch("/events.json");
-    return json.json();
+    try {
+      const response = await fetch("/724eventsProjetOpenClassRooms/events.json");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch events.json: ${response.statusText}`);
+      }
+
+      const text = await response.text();  // Get the response as text first
+      // console.log("Response Text:", text);  // Log the raw response to inspect it
+
+      const data = JSON.parse(text);  // Manually parse the JSON
+      // console.log("Fetched Data:", data); // Check the parsed data
+      return data;
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      throw err; // Propagate error
+    }
   },
 };
+
+
+
+
 
 // create array of index/month/year from data.events json
 const extractMonths = (events) =>
@@ -51,6 +69,8 @@ export const DataProvider = ({ children }) => {
   const getData = useCallback(async () => {
     try {
       const fetchedData = await api.loadData();
+      // eslint-disable-next-line no-console
+      // console.log("Fetched Data:", fetchedData); // Debugging
       setData(fetchedData);
       // actually fecthing most recent event from json
       setLast(getMostRecentEvent(fetchedData.events));
@@ -60,9 +80,15 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (data) return;
-    getData();
+    // console.log("Data is null, calling getData");
+    // console.log("getData function: ", getData);
+    if (!data) {
+      getData();
+    }
   }, [data, getData]);
+  
+  
+  
 
   // memo to stop re-render issues
   const contextValue = useMemo(() => ({ data, error, last }), [data, error, last]);
